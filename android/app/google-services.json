@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24400270846",
+    "project_id": "ionathon",
+    "storage_bucket": "ionathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24400270846:android:6511aacbcade0386bddcaf",
+        "android_client_info": {
+          "package_name": "com.hackathon.ionathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24400270846-bgeh2lqec9l385t5o3kpdm6okkkm31v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDclaMoCImrYXblAaOzd4x1VJ77z1t9dtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24400270846-bgeh2lqec9l385t5o3kpdm6okkkm31v4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
