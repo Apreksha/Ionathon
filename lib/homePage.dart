@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ionathon/slideFadeTransition.dart';
 import 'package:ionathon/colorScheme.dart';
 import 'package:ionathon/offsetProvider.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
@@ -100,15 +101,29 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hello", style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'circe'
-                    ),),
-                    Text("John Scott", style: TextStyle(
-                        fontSize: 30,
-                        fontFamily: 'circe',
-                        fontWeight: FontWeight.w700
-                    ),),
+                    SlideFadeTransition(
+                      curve: Curves.elasticOut,
+                      delayStart: Duration(milliseconds: 500),
+                      animationDuration: Duration(milliseconds: 1200),
+                      offset: 2.5,
+                      direction: Direction.horizontal,
+                      child: Text("Hello", style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'circe'
+                      ),),
+                    ),
+                    SlideFadeTransition(
+                      curve: Curves.elasticOut,
+                      delayStart: Duration(milliseconds: 500),
+                      animationDuration: Duration(milliseconds: 1200),
+                      offset: 2.5,
+                      direction: Direction.horizontal,
+                      child: Text("John Scott", style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'circe',
+                          fontWeight: FontWeight.w700
+                      ),),
+                    ),
                     Expanded(
                         child: Container()
                     ),
@@ -252,7 +267,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                     ),
                     SizedBox(height: 5,),
                     Text(subj, style: TextStyle(
-                        fontSize: 19,
+                        fontSize: MediaQuery.of(context).size.width/25,
                         fontWeight: FontWeight.w700
                     ),),
                     SizedBox(
