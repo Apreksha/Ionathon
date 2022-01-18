@@ -1,14 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ionathon/CircularParticleScreen.dart';
 import 'package:ionathon/customDrawer.dart';
-import 'package:ionathon/homePage.dart';
+import 'package:ionathon/dashboard.dart';
+import 'package:ionathon/offsetProvider.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=> offsetProvider())
+        ],
+      child: const MyApp()));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
@@ -31,7 +37,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: CircularParticleScreen(),
+      home: CustomDrawer(),
     );
   }
 }
+

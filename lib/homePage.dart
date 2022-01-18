@@ -1,91 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ionathon/colorScheme.dart';
-import 'package:ionathon/customDrawer.dart';
+import 'package:ionathon/offsetProvider.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
+late HomePageState homePageState;
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
+  late AnimationController animationController;
 
-  double xoffSet = 0;
-  double yoffSet = 0;
-  double angle = 0;
 
-  bool isOpen = false;
-  bool isPlaying = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 15),
+    );
+    animationController.addListener(() {
+      setState(() {
+
+      });
+    });
+
+    animationController.repeat();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context){
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+        SystemUiOverlayStyle.dark.systemNavigationBarColor,
+      ),
+    );
     return AnimatedContainer(
       transform: Matrix4Transform()
-          .translate(x: xoffSet, y: yoffSet)
-          .rotate(angle)
+          .translate(x: context.watch<offsetProvider>().xoffsetHome, y: context.watch<offsetProvider>().yoffSetHome)
+          .rotate(context.watch<offsetProvider>().angleHome)
           .matrix4,
       duration: Duration(milliseconds: 250),
       child: Scaffold(
         backgroundColor: lightBlue,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: lightBlue,
           elevation: 0,
-          leading: Stack(
-            children: [
-              !isOpen
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: ChangeNotifierProvider(
+              create: (context)=>offsetProvider(),
+              child: !context.watch<offsetProvider>().isOpen
                   ? IconButton(
                   icon: Icon(
                     Icons.menu,
-                    color: Color(0xFF1f186f),
+                    color: Colors.black,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      xoffSet = 150;
-                      yoffSet = 80;
-                      angle = -0.2;
-                      isOpen = true;
-                    });
-
-                    secondLayerState.setState(() {
-                      secondLayerState.xoffSet = 122;
-                      secondLayerState.yoffSet = 110;
-                      secondLayerState.angle = -0.275;
-                    });
-                  })
+                  onPressed: () => context.read<offsetProvider>().closedDrawer()
+                  )
                   : IconButton(
                   icon: Icon(Icons.arrow_back_ios,
                       color: Color(0xFF1f186f)),
-                  onPressed: () {
-                    if (isOpen == true) {
-                      setState(() {
-                        xoffSet = 0;
-                        yoffSet = 0;
-                        angle = 0;
-                        isOpen = false;
-                      });
-
-                      secondLayerState.setState(() {
-                        secondLayerState.xoffSet = 0;
-                        secondLayerState.yoffSet = 0;
-                        secondLayerState.angle = 0;
-                      });
-                    }
-                  }),
-            ],
+                  onPressed: ()=> context.read<offsetProvider>().openDrawer()
+                  ),
+            ),
           ),
           actions: [
-            IconButton(
-              icon: Icon(
-                Icons.notifications_none,
-                color: Colors.black,
-                size: 30,
-              ), onPressed: () {  },
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.notifications_none,
+                  color: Colors.black,
+                  size: 30,
+                ), onPressed: () {  },
+              ),
             )
           ],
         ),
@@ -165,21 +161,19 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 16,
                             fontWeight: FontWeight.w600
                         ),),
-                        Text("See all", style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontSize: 13
-                        ),)
                       ],
                     ),
                     Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
+                      child: ListView(
+                        children:[ Column(
                           children: [
-                            tutorWidget("boy1Big", "Mr. Pater Parker", "English", "0-6", "150"),
-                            tutorWidget("girl", "Ms. Leena Dey", "Arts & Crafts", "0-4", "100"),
-                            tutorWidget("boy2", "Mr. Jason Shrute", "Math", "0-2", "100"),
+                            tutorWidget("assets/english.png", "English", "5",0.50),
+                            tutorWidget("assets/french.png", "French","5",0.75),
+                            tutorWidget("assets/math.png","Maths","5",0.25),
+                            tutorWidget("assets/science.png", "Science", "5",0.50),
+                            tutorWidget("assets/social-science.png", "Social Science", "5",0.25),
                           ],
-                        ),
+                        ),]
                       ),
                     )
                   ],
@@ -191,8 +185,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  InkWell tutorWidget(String img, String name, String subj, String grade, String price)
+  InkWell tutorWidget(String img, String subj, String grade,double per)
   {
+    //final percentage = animationController.value * 100;
     return InkWell(
       onTap: (){},
       child: Container(
@@ -214,53 +209,23 @@ class _HomePageState extends State<HomePage> {
                       width: 150,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('asset/images/iconBgNew.png'),
+                              image: AssetImage('assets/iconBgNew.png'),
                               fit: BoxFit.contain
                           )
                       ),
                     ),
                   ),
-                  Container(
-                    height: 130,
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          child: RotatedBox(
-                            quarterTurns: 2,
-                            child: Icon(
-                              Icons.star,
-                              color: darkBlue,
-                              size: 60,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 60,
-                          height: 60,
-                          child: Center(
-                            child: Text("4.5", style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white
-                            ),),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
                   Positioned(
                     left: 50,
+                    bottom: 50,
                     child: Hero(
                       tag: img,
                       child: Container(
-                        width: 100,
-                        height: 130,
+                        width: 50,
+                        height: 50,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage('asset/images/$img.png'),
+                                image: AssetImage(img),
                                 fit: BoxFit.cover
                             )
                         ),
@@ -274,7 +239,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 padding: EdgeInsets.all(15),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -286,24 +251,29 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    Text(name, style: TextStyle(
+                    Text(subj, style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w700
                     ),),
-                    Text('$subj Teacher', style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: darkBlue
-                    ),),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("\$$price/session",style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500
-                          ),)
-                        ],
+                    SizedBox(
+                      height: 8,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: LiquidCircularProgressIndicator(
+                        backgroundColor: darkBlue,
+                        valueColor: AlwaysStoppedAnimation(pink),
+                        value: per,
+                        center: Text('${(per*100).toInt()}%',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10.0,
+                            color: Colors.black,
+                          ),),
+                        borderColor: Colors.black,
+                        borderWidth: 1.0,
+                        direction: Axis.vertical,
                       ),
                     )
                   ],

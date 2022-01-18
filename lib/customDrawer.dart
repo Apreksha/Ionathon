@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:ionathon/colorScheme.dart';
+import 'package:ionathon/dashboard.dart';
 import 'package:ionathon/homePage.dart';
+import 'package:ionathon/offsetProvider.dart';
 import 'package:matrix4_transform/matrix4_transform.dart';
+import 'package:provider/provider.dart';
+
 class CustomDrawer extends StatefulWidget {
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
 }
-
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           SecondLayer(),
           ThirdLayer(),
+          DashBoardScreen(),
           HomePage(),
+
         ],
       ),
     );
@@ -25,39 +30,39 @@ class _CustomDrawerState extends State<CustomDrawer> {
 class SecondLayer extends StatefulWidget {
   @override
   SecondLayerState createState() => SecondLayerState();
-
-// openTab() => createState().openTab();
 }
 
 late SecondLayerState secondLayerState;
 class SecondLayerState extends State<SecondLayer> {
 
-  double xoffSet = 0;
-  double yoffSet = 0;
-  double angle = 0;
-
-  bool isOpen = false;
-
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-        transform: Matrix4Transform()
-            .translate(x: xoffSet, y: yoffSet)
-            .rotate(angle)
-            .matrix4,
-        duration: Duration(milliseconds: 550),
-         decoration: BoxDecoration(
-             borderRadius: BorderRadius.circular(10), color: darkBlue),
-      child: Column(
-          children: [
-            Row(
-              children: [],
-            )
-          ],
-        ));
+    return ChangeNotifierProvider(
+      create: (context)=>offsetProvider(),
+      child: AnimatedContainer(
+          transform: Matrix4Transform()
+              .translate(x: context.read<offsetProvider>().xoffsetSecond, y: context.read<offsetProvider>().yoffSetSecond)
+              .rotate(context.read<offsetProvider>().angleSecond)
+              .matrix4,
+          duration: Duration(milliseconds: 550),
+           decoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(10), color: darkBlue),
+        child: Column(
+            children: [
+              Row(
+                children: [],
+              )
+            ],
+          )),
+    );
   }
 }
-class ThirdLayer extends StatelessWidget {
+class ThirdLayer extends StatefulWidget {
+  @override
+  State<ThirdLayer> createState() => _ThirdLayerState();
+}
+
+class _ThirdLayerState extends State<ThirdLayer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,19 +108,31 @@ class ThirdLayer extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Home Screen",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                TextButton(
+                   child: Text("Home Screen",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                   onPressed: () {
+                     //isHomeVisible = true;
+                     context.read<offsetProvider>().openDrawer();
+                   }
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                ),
-                Text(
-                  "Screen 2",
-                  style: TextStyle(
-                    color: Colors.white,
+                // Padding(
+                //   padding: EdgeInsets.only(bottom: 10),
+                // ),
+                TextButton(
+                  onPressed: (){setState(() {
+                    // isHomeVisible = false;
+                    //  print(isHomeVisible);
+                  });
+                  //context.read<offsetProvider>().openDrawer();
+                  },
+                  child: const Text(
+                    "Dashboard",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Padding(
