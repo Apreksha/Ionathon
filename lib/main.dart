@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ionathon/CircularParticleScreen.dart';
 import 'package:ionathon/customDrawer.dart';
 import 'package:ionathon/dashboard.dart';
 import 'package:ionathon/offsetProvider.dart';
+import 'package:ionathon/quiz.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: CustomDrawer(),
+      home:Quiz(),
     );
   }
 }
