@@ -5,6 +5,7 @@ class Topic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -29,7 +30,8 @@ class CustomAppBar extends StatelessWidget {
              children: [
                Container(
                  decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(40)
+                   border: Border.all(color: lightBlue),
+                  // borderRadius: BorderRadius.circular(40)
                  ),
                  height: 300,
                  child: ClipRRect(borderRadius: BorderRadius.circular(40),
@@ -188,9 +190,9 @@ class Module{
           Icons.play_arrow_rounded,
           'Module 1',
           'Learn ABC',
-          kPrimaryLight,
-          kPrimaryLight,
-          kPrimary,
+          darkBlue,
+          lightBlue,
+          Colors.white,
           kPrimaryDark,
           '22 Min',
           '1 lesson'),
@@ -201,7 +203,7 @@ class Module{
           Icons.lock_outline_rounded,
           'Quiz',
           "Let's test your knowledge",
-          kPrimaryLight,
+          darkBlue,
           Colors.white,
           Colors.grey.withOpacity(0.2),
           Colors.grey,
