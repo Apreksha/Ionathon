@@ -6,6 +6,7 @@ import 'package:ionathon/customDrawer.dart';
 import 'package:ionathon/dashboard.dart';
 import 'package:ionathon/offsetProvider.dart';
 import 'package:ionathon/quiz.dart';
+import 'package:ionathon/topicpage.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -16,7 +17,7 @@ void main() async{
       providers: [
         ChangeNotifierProvider(create: (_)=> offsetProvider())
         ],
-      child: const MyApp()));
+      child:  MyApp()));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
@@ -29,7 +30,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  //const MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home:Quiz(),
+      home:Topic(),
     );
   }
 }

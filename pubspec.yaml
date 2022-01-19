@@ -58,6 +58,8 @@ flutter:
     - assets/social-science.png
     - assets/boy1Big.png
     - assets/bg.jpg
+    - assets/abc.jpg
+    - assets/author.png
 
   fonts:
     - family: circe
