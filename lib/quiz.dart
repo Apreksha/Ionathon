@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:ionathon/colorScheme.dart';
@@ -9,20 +12,31 @@ class Quiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+        SystemUiOverlayStyle.dark.systemNavigationBarColor,
+      ),
+    );
     QuestionController _questionController = Get.put(QuestionController());
     return Scaffold(
+      backgroundColor: lightBlue,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           // Fluttter show the back button automatically
-          backgroundColor: Colors.transparent,
+          backgroundColor: lightBlue,
           elevation: 0,
+          leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.black,),
+          onPressed: (){
+          },),
           actions: [
-            FlatButton(onPressed: _questionController.nextQuestion, child: Text("Skip",style: TextStyle(color: Colors.white),)),
+            FlatButton(onPressed: _questionController.nextQuestion,
+                child: Text("Skip",style: TextStyle(color: Colors.black),)),
           ],
         ),
       body: Stack(
         children: [
-          Image.asset("assets/bg.jpg", fit: BoxFit.fill,height: MediaQuery.of(context).size.height,),
+          //Image.asset("assets/bg.jpg", fit: BoxFit.fill,height: MediaQuery.of(context).size.height,),
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,14 +58,14 @@ class Quiz extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .headline4
-                            ?.copyWith(color: kSecondaryColor),
+                            ?.copyWith(color: Colors.grey.shade500),
                         children: [
                           TextSpan(
                             text: "/${_questionController.questions.length}",
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
-                                ?.copyWith(color: kSecondaryColor),
+                                .headline4
+                                ?.copyWith(color: Colors.orange.shade300),
                           ),
                         ],
                       ),
@@ -199,7 +213,7 @@ class ProgressBar extends StatelessWidget {
       width: double.infinity,
       height: 35,
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF3F4768), width: 3),
+        border: Border.all(color: Colors.black, width: 3),
         borderRadius: BorderRadius.circular(50),
       ),
       child: GetBuilder<QuestionController>(
@@ -207,7 +221,7 @@ class ProgressBar extends StatelessWidget {
         builder: (controller) {
           return Stack(
             children: [
-              // LayoutBuilder provide us the available space for the conatiner
+              // LayoutBuilder provide us the available space for the container
               // constraints.maxWidth needed for our animation
               LayoutBuilder(
                 builder: (context, constraints) => Container(
@@ -226,8 +240,9 @@ class ProgressBar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("${(controller.animation.value * 60).round()} sec"),
-                      Icon(Icons.watch_later_outlined,color: Colors.grey,)
+                      Text("${(controller.animation.value * 60).round()} sec",
+                        style: TextStyle(color: Colors.red),),
+                      Icon(Icons.watch_later_outlined,color: Colors.red,)
                     ],
                   ),
                 ),
@@ -265,7 +280,7 @@ class Option extends StatelessWidget {
                 return kRedColor;
               }
             }
-            return kGrayColor;
+            return Colors.black;
           }
 
           IconData getTheRightIcon() {
@@ -292,13 +307,13 @@ class Option extends StatelessWidget {
                     height: 26,
                     width: 26,
                     decoration: BoxDecoration(
-                      color: getTheRightColor() == kGrayColor
+                      color: getTheRightColor() == Colors.black
                           ? Colors.transparent
                           : getTheRightColor(),
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(color: getTheRightColor()),
                     ),
-                    child: getTheRightColor() == kGrayColor
+                    child: getTheRightColor() == Colors.black
                         ? null
                         : Icon(getTheRightIcon(), size: 16),
                   )
@@ -327,6 +342,7 @@ class QuestionCard extends StatelessWidget {
       padding: EdgeInsets.all(kDefaultPadding),
       decoration: BoxDecoration(
         color: Colors.white,
+        border: Border.all(color: Colors.black,width: 2),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Column(

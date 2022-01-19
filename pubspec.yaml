@@ -63,8 +63,6 @@ flutter:
     - family: circe
       fonts:
         - asset: assets/fonts/circe.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
-    #         style: italic
     - family: product
       fonts:
         - asset: assets/fonts/productsans.ttf
