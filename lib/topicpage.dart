@@ -302,6 +302,7 @@ class CourseModule extends StatelessWidget {
 
   _buildButton(IconData icon,String text){
     return Container(
+      padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: module.buttonColor,
         borderRadius: BorderRadius.circular(20)
